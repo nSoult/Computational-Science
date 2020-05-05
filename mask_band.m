@@ -1,4 +1,5 @@
 function [mask] = mask_band(n,type, p)
+% Author: N. SOULTANIS , AM: 1054319, Date: 10/1/2020
 mask=ones(n);
 if type=='band'
     disp('Type is band')
@@ -42,18 +43,21 @@ if type == 'btdr'
         case 3
             k = floor(n/p);
             r = mod(n,p);
-
+            
             for step=0:k-1
                 for i=1:p
                     for j=1:p
-                        mask(step*p + i, step*p +j)=1;
+                        mem(step*p + i, step*p +j) = 1;
+                        mask(step*p + i+p, step*p +j)=1;
                     end
                 end
             end
+            temp = mask(1:end-p,1:end);
+            mask = temp + mem + temp';
             
-            %fix the rest positions
-            mask(n-r+1:n,n-r+1:n) = 1;
-        otherwise
+            otherwise
             return
-    end   
+    end
+    
+    
 end
